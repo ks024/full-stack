@@ -267,3 +267,348 @@ selector {
 This cheat sheet covers the basics of CSS Grid and Flexbox properties to help with layout design.
 
 ---
+
+### CSS Specificity Overview
+
+**CSS Specificity** helps determine which CSS rules are applied when multiple rules conflict. It is a hierarchical system that ranks selectors based on their specificity. Higher specificity values override lower ones.
+
+#### Specificity Hierarchy
+
+1. **Inline Styles**: 
+   - Highest specificity.
+   - Example: `<p style="color: white;">`
+   - Specificity Score: 1000 (or `1 0 0 0`).
+
+2. **IDs**:
+   - Represented by `#`.
+   - Example: `#header`
+   - Specificity Score: 0100 (or `0 1 0 0`).
+
+3. **Classes, Attributes, and Pseudo-classes**:
+   - Classes: `.class-name`
+   - Attributes: `p[attribute]`
+   - Pseudo-classes: `:hover`
+   - Specificity Score: 0010 (or `0 0 1 0`).
+
+4. **Elements and Pseudo-elements**:
+   - Elements: `div`, `p`
+   - Pseudo-elements: `::before`, `::after`
+   - Specificity Score: 0001 (or `0 0 0 1`).
+
+#### Calculating Specificity
+
+Specificity is calculated by adding values for each category of selector types:
+
+1. **Inline styles:** Highest value, `1000`
+2. **IDs:** Next highest, `100`
+3. **Classes, attributes, pseudo-classes:** Intermediate value, `10`
+4. **Elements, pseudo-elements:** Lowest value, `1`
+
+**Example Calculation:**
+
+- `#hello {}`  
+  Specificity: `0100`
+
+- `div {}`  
+  Specificity: `0001`
+
+- `div p.foo {}`  
+  Specificity: `0012`  
+  (2 elements + 1 class)
+
+**Examples:**
+
+1. **Example 1**:
+   - `p {}`  
+     Specificity: `0001`
+   - `div p {}`  
+     Specificity: `0002`
+   - `div p.foo {}`  
+     Specificity: `0012`  
+   The rule with the highest specificity, `div p.foo`, will be applied.
+
+2. **Example 2**:
+   - `p#bar`  
+     Specificity: `0101`  
+     (1 element + 1 ID)
+   - `p.foo`  
+     Specificity: `0011`  
+     (1 element + 1 class)
+   - `p.p.foo`  
+     Specificity: `0021`  
+     (1 element + 2 classes)  
+   The rule with the highest specificity, `p.p.foo`, will be applied.
+
+#### Additional Guidelines
+
+- **Selectors with Equal Specificity:** The last written rule is applied.
+- **ID Selectors:** Should be used sparingly to ensure high specificity where needed.
+- **Universal Selector (`*`):** Zero specificity.
+- **CSS Specificity Calculators:** Useful tools for determining rule precedence.
+
+Understanding specificity helps manage conflicts and ensures the intended styles are applied correctly.
+
+---
+### Pseudo-Class Selectors Overview
+
+**Pseudo-class selectors** enhance CSS by allowing developers to style elements based on their state or position. These selectors provide advanced styling and interactivity without extra effort, improving user experience on web pages.
+
+#### General Syntax
+
+```css
+selector:pseudo-class {
+    property: value;
+}
+```
+
+#### General Classifications
+
+1. **User Action States**:
+   - **`:hover`**: Styles an element when the cursor hovers over it.
+     - *Example*: `a:hover { color: red; }`
+   - **`:active`**: Styles an element while it is being pressed.
+     - *Example*: `button:active { background-color: blue; }`
+   - **`:focus`**: Styles an element when it receives focus.
+     - *Example*: `input:focus { border: 2px solid green; }`
+
+   **Example Usage**:
+   ```html
+   <a href="#" class="mypage">My Page</a>
+   <button class="mybutton">Click Me</button>
+   ```
+
+   ```css
+   .mypage:hover { color: red; }
+   .mybutton:active { background-color: blue; }
+   ```
+
+2. **Form States**:
+   - **`:disabled`**: Targets disabled form elements.
+     - *Example*: `input:disabled { background-color: grey; }`
+   - **`:enabled`**: Targets enabled form elements.
+     - *Example*: `input:enabled { background-color: white; }`
+   - **`:checked`**: Targets checked checkboxes or radio buttons.
+     - *Example*: `input:checked { background-color: yellow; }`
+   - **`:indeterminate`**: Targets checkboxes in an indeterminate state.
+     - *Example*: `input:indeterminate { background-color: orange; }`
+   - **`:valid`**: Targets valid form fields.
+     - *Example*: `input:valid { border: 2px solid green; }`
+   - **`:invalid`**: Targets invalid form fields.
+     - *Example*: `input:invalid { border: 2px solid red; }`
+
+3. **Position-Based States**:
+   - **`:first-of-type`**: Targets the first element of its type within its parent.
+     - *Example*: `li:first-of-type { font-weight: bold; }`
+   - **`:last-of-type`**: Targets the last element of its type within its parent.
+     - *Example*: `li:last-of-type { font-style: italic; }`
+   - **`:nth-of-type(n)`**: Targets the nth element of its type within its parent.
+     - *Example*: `li:nth-of-type(2) { color: green; }`
+   - **`:nth-last-of-type(n)`**: Targets the nth element from the end of its type within its parent.
+     - *Example*: `li:nth-last-of-type(1) { color: blue; }`
+
+   **Example Usage**:
+   ```html
+   <ul>
+       <li>Adrian</li>
+       <li>Mario</li>
+   </ul>
+   ```
+
+   ```css
+   li:first-of-type { color: red; }
+   ```
+
+#### Practical Example
+
+```html
+<p>This is a paragraph.</p>
+<input type="text" placeholder="Type something...">
+<input type="checkbox" id="check1">
+<input type="checkbox" id="check2" checked>
+```
+
+```css
+input:focus { border: 2px solid blue; }
+input:checked { background-color: yellow; }
+p:first-of-type { color: green; }
+```
+
+### Summary
+
+Pseudo-classes provide powerful tools for styling elements based on user interactions, form states, and positional context. By leveraging pseudo-classes like `:hover`, `:focus`, `:checked`, and `:nth-of-type`, you can create more dynamic and interactive web pages.
+
+---
+### Pseudo-Elements in CSS
+
+Pseudo-elements are powerful tools in CSS that allow you to style specific parts of an element or add additional content without modifying the HTML. They help enhance the design and presentation of your web pages.
+
+#### Syntax
+
+The syntax for pseudo-elements involves using two colons (`::`) followed by the pseudo-element name:
+
+```css
+selector::pseudo-element {
+    property: value;
+}
+```
+
+### Common Pseudo-Elements
+
+#### 1. `::first-letter`
+
+Styles the first letter of an element. Useful for adding emphasis to the beginning of paragraphs or list items.
+
+**Example:**
+
+**HTML:**
+```html
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <ul>
+        <li>Item one</li>
+        <li>Item two</li>
+        <li>Item three</li>
+    </ul>
+</body>
+</html>
+```
+
+**CSS:**
+```css
+li::first-letter {
+    color: coral;
+    font-size: 1.3em;
+    font-weight: bold;
+    line-height: 1;
+}
+```
+
+**Output:**
+
+The first letter of each list item will be coral, larger, bold, and visually distinct.
+
+#### 2. `::first-line`
+
+Styles the first line of an element. This can be used to apply unique styles to the first line of a paragraph or list item.
+
+**Example:**
+
+**CSS:**
+```css
+ul {
+    list-style-type: none;
+}
+
+li::first-line {
+    color: lightseagreen;
+    text-decoration: underline;
+    line-height: 1;
+}
+```
+
+**Output:**
+
+The first line of each list item will be light sea green, underlined, and distinct from the rest of the text.
+
+#### 3. `::selection`
+
+Styles the portion of the element that the user has selected. Useful for improving the user experience by changing the appearance of selected text.
+
+**Example:**
+
+**CSS:**
+```css
+li::selection {
+    color: brown;
+    background-color: antiquewhite;
+}
+```
+
+**Output:**
+
+The selected text within list items will have a brown color with an antiquewhite background.
+
+#### 4. `::marker`
+
+Styles the marker of a list item (e.g., bullet points or numbers). This pseudo-element is helpful for customizing the appearance of list markers.
+
+**Example:**
+
+**CSS:**
+```css
+li::marker {
+    color: cornflowerblue;
+    content: '<> ';
+    font-size: 1.1em;
+}
+```
+
+**Output:**
+
+The bullet points in the list will be cornflower blue with a custom symbol and slightly larger size.
+
+#### 5. `::before` and `::after`
+
+These pseudo-elements add content before or after an element’s content. They are often used to add decorative elements or additional information.
+
+**Example:**
+
+**HTML:**
+```html
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <p id="tips">Don't rinse your pasta after it is drained.</p>
+    <p>Slice the tomatoes. Take the extra efforts to seed them.</p>
+    <p id="tips">Peel and seed large tomatoes.</p>
+</body>
+</html>
+```
+
+**CSS:**
+```css
+#tips::before {
+    content: "Tip:";
+    background: darkkhaki;
+    color: darkslategray;
+    padding: 3px 5px;
+    border-radius: 10%;
+}
+
+#tips::after {
+    content: "!!";
+    color: darkslategray;
+    padding-left: 5px;
+}
+```
+
+**Output:**
+
+Each paragraph with the ID `tips` will have the word "Tip:" before it and "!!" after it, styled with specific colors and padding.
+
+### Conclusion
+
+Pseudo-elements are a versatile and powerful feature in CSS, allowing you to style specific parts of elements or add content dynamically. By using pseudo-elements like `::first-letter`, `::first-line`, `::selection`, `::marker`, and `::before`/`::after`, you can significantly enhance the visual appeal and user experience of your web pages.
+
+Feel free to experiment with these pseudo-elements and explore their creative applications to suit your design needs.
+
+---
+## Additional resources
+The following resources will be helpful as additional references in dealing with different concepts related to the topics you have covered in this section.
+
+- [Broad overview of layouts in CSS](https://developer.mozilla.org/en-US/docs/Learn/CSS/CSS_layout)
+- [Detailed overview of flexboxes](https://css-tricks.com/snippets/css/a-guide-to-flexbox/)
+- [Detailed overview of grids (1)](https://learncssgrid.com/)
+- [Detailed overview of grids (2)](https://web.dev/learn/css/grid/)
+- [Commonly used selectors](https://www.geeksforgeeks.org/10-css-selectors-every-developer-should-know/)
+- [Combinator selectors](https://developer.mozilla.org/en-US/docs/Learn/CSS/Building_blocks/Selectors/Combinators)
+- [Comprehensive list of selectors](https://www.w3schools.com/cssref/css_selectors.asp)
+- [Comprehensive list of pseudo-classes](https://developer.mozilla.org/en-US/docs/Web/CSS/Pseudo-classes)
+- [Comprehensive list of pseudo-elements](https://developer.mozilla.org/en-US/docs/Web/CSS/Pseudo-elements)
