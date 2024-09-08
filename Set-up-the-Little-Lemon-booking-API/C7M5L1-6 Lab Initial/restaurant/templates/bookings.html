@@ -4,7 +4,7 @@
 {% block content %}
 <section>
   <article>
-    <h1><!--Add title here --></h1>
+    <h1> All Reservations </h1>
     <!--Begin row-->
     <div class="row">
       <!--Begin col-->
@@ -32,8 +32,18 @@
   </article>
 </section>
 
-<!-- Add your code inside the script tags below  -->
 <script>
+  // Parse the JSON data
+  const bookings = JSON.parse('{{ bookings|safe }}');
+
+  // Log the bookings constant values to the console for debugging
+  console.log(bookings);
+
+  // Convert JSON data to a pretty-printed string
+  const pretty_json = JSON.stringify(bookings, null, 2);
+
+  // Display the pretty-printed JSON in the <pre> tag
+  document.getElementById('bookings').textContent = pretty_json;
 
 </script>
 {% endblock %}
